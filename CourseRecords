@@ -1,0 +1,89 @@
+
+class StudyApplication:
+    def __init__(self):
+        self.__study_info={}
+
+    def help(self):
+        print("1 add course")
+        print("2 get course data")
+        print("3 statistics")
+        print("0 exit")
+
+    def add_course(self):
+        course_name=input("course: ")
+        grade=input("grade:")
+        credit=input("credits: ")
+        if not course_name in self.__study_info:
+            self.__study_info[course_name]=[grade,credit]
+
+        else:
+            if self.__study_info[course_name][0]<grade:
+                self.__study_info[course_name][0]=grade
+            
+    def get_course(self):
+        course_name=input("course: ")
+        if course_name in self.__study_info:
+            print( f"{course_name} ({self.__study_info[course_name][1]} cr) grade {self.__study_info[course_name][0]}")
+        else:
+            print("no entry for this course")
+
+    def count(self):
+        return len(self.__study_info)
+
+    def credit_sum(self):
+        no_credits=0
+        for course, value in self.__study_info.items():
+            no_credits+=int(value[1])
+        return no_credits
+        
+    def mean(self):
+        total_grade=0
+        for course, value in self.__study_info.items():
+            total_grade+=int(value[0])
+        if self.count()==0:
+            return 0
+        else:
+            return total_grade/self.count()
+       
+    def count_grade(self,grade: str):
+        count_special=0
+        for course, value in self.__study_info.items():
+            if value[0]==grade:
+                count_special+=1
+        return count_special
+
+    def distribution(self):
+        print("grade distribution")
+        
+        print(f"5: {'x'*self.count_grade('5')}")
+        print(f"4: {'x'*self.count_grade('4')}")
+        print(f"3: {'x'*self.count_grade('3')}")
+        print(f"2: {'x'*self.count_grade('2')}")
+        print(f"1: {'x'*self.count_grade('1')}")
+
+
+    def statistics(self):
+        print(f"{self.count()} completed courses, a total of {self.credit_sum()} credits")
+        
+        print(f"mean {self.mean():.1f}")   
+        
+        print(self.distribution()) 
+
+    def execute(self):
+        self.help()
+        while True:
+            command=input("command: ")
+            if command=="0":
+                break
+            elif command=="1":
+                self.add_course()
+            elif command=="2":
+                self.get_course()
+            elif command=="3":
+                self.statistics()
+            else:
+                self.help()
+            print()
+
+application=StudyApplication()
+application.execute()
